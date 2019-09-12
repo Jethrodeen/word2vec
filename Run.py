@@ -74,7 +74,7 @@ print('Training set built.')
 #set parameters and initialize model
 graph_params = {'batch_size': 32,
                 'vocab_size': np.max(x)+1,
-                'embed_size': 64,
+                'embed_size': 32,
                 'hid_size': 64,
                 'neg_samples': 64,
                 'learn_rate': 0.01,
