@@ -22,10 +22,10 @@ import math
 load_path = ''
 
 #Files for text corpus. Can give multiple inputs
-files = ['data/ASoundOfThunder.txt']
-        #,'data/sign_of_the_four.txt'
-        #,'data/adventures_of_sherlock_holmes.txt']
-        #,'data/preprocessed-input-large']
+files = ['data/ASoundOfThunder.txt'
+        ,'data/sign_of_the_four.txt'
+        ,'data/adventures_of_sherlock_holmes.txt'
+         ,'preprocessed-input-10000']
 
 
 # the following code runs the below functions in order
@@ -41,7 +41,7 @@ files = ['data/ASoundOfThunder.txt']
 
 if load_path == '':
     word_array, dictionary, num_lines, num_words, num_unique_words = docload.build_word_array(
-    files, vocab_size=80000)
+    files, vocab_size=50000)
 
     # Save to pickle file for faster loading next time.
     save_path = 'data/DataPickle'
@@ -93,8 +93,10 @@ print('Model built. Vocab size = {}. Document length = {} words.'
 #Train Model
 print('Training ...')
 starttime = time.time()
-results = model.train(x_train, y_train, x_val, y_val, epochs=100, verbose=True)
+results = model.train(x_train, y_train, x_val, y_val, epochs=30, verbose=True)
 endtime = time.time()
+
+
 
 print("Model Trained in ", math.floor((endtime-starttime)/60)," minutes and ", (endtime-starttime)%60 , " seconds.")
 
@@ -102,11 +104,10 @@ print("Model Trained in ", math.floor((endtime-starttime)/60)," minutes and ", (
 #WordVector class of our trained embedding matrix
 word_vector_embed = WordVector(results['embed_weights'], dictionary)
 
-
 #================================================================================================
 #input a word
 
-word = "shoot"
+word = "man"
 print('Word Embedding of :', "'" + word + "'")
 print(word_vector_embed.get_vector_by_name(word=word), '\n')
 print('Embedding layer: 8 closest words to:', "'" + word + "'")
@@ -114,5 +115,6 @@ print(word_vector_embed.n_closest(word=word, num_closest=8, metric='cosine'), '\
 
 
 #TSNE plot
+#first input is the starting index
 embed_2d,word_list = word_vector_embed.project_2d(20,500)
 
